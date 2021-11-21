@@ -1,0 +1,5725 @@
+{
+	"info": {
+		"_postman_id": "bd783fc8-c046-470a-bed7-d50580699b4a",
+		"name": "Admin Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Create JWT Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"token\", jsonData.data.token);",
+									"",
+									"pm.test(\"Status test\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Restonse data test\", function () {",
+									"    const responseJson = pm.response.json();",
+									"",
+									"    pm.expect(responseJson.data).to.be.a('object');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/auth/login",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Base User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"first_name\",\n    \"last_name\": \"last_name\",\n    \"email\": \"test@gmail.com\",\n    \"phone\": \"+380990776483\",\n    \"password\": \"Admin123fs423\",\n    \"password_confirmation\": \"Admin123fs423\",\n    \"company_name\": \"test company_name\",\n    \"nip\": \"0031031201\",\n    \"address\": {\n        \"code\": \"012-21\",\n        \"city\": \"Warshava\",\n        \"voivodeship\": \"mazowieckie\",\n        \"street\": \"Elekcyjna\",\n        \"building\": \"23\",\n        \"house\": \"56B\"\n    }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/auth/base-user/register",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"auth",
+								"base-user",
+								"register"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Base user",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/auth/verify/base-user/:user_id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"auth",
+								"verify",
+								"base-user",
+								":user_id"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "get roles"
+					},
+					"response": []
+				},
+				{
+					"name": "Register Guest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"first_name_guest\",\n    \"last_name\": \"last_name_guest\",\n    \"email\": \"guesttest@gmail.com\",\n    \"phone\": \"+38099077649\",\n    \"password\": \"Admin123fs445\",\n    \"password_confirmation\": \"Admin123fs445\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/auth/guest/register",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"auth",
+								"guest",
+								"register"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Guest",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/auth/verify/guest/:token",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"auth",
+								"verify",
+								"guest",
+								":token"
+							],
+							"variable": [
+								{
+									"key": "token",
+									"value": null
+								}
+							]
+						},
+						"description": "get roles"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin1@gmail.com\",\n    \"email_confirmation\": \"admin1@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/auth/forgot-password",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recover password",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"Admin123fs423\",\n    \"password_confirmation\": \"Admin123fs423\",\n    \"token\": \"PlgM0OzpDvv87wkvEnvbA7FDMSdvQv4Y\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/auth/recover-password",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"auth",
+								"recover-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OAuth redirect",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/oauth/google-redirect",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"oauth",
+								"google-redirect"
+							]
+						},
+						"description": "get roles"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Attributes",
+			"item": [
+				{
+					"name": "List Attributes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/attributes",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"attributes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Attribute",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/attributes/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"attributes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Attribute",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": 2,\n    \"languages\": [\n        {\n            \"lang\": \"en\",\n            \"name\": \"Attribute 2\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/attributes",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"attributes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Attribute",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"languages\": [\n        {\n            \"lang\": \"en\",\n            \"name\": \"vvvvvvv\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/attributes/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"attributes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Attribute",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"languages\": [\n        {\n            \"code\": \"en\",\n            \"name\": \"vvvvvvv\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/attributes/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"attributes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Labels",
+			"item": [
+				{
+					"name": "List Labels",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/labels",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"labels"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Label",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/labels/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"labels",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Label",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bg_color\": \"#000\",\n    \"color\": \"#fff\",\n    \"languages\": [\n        {\n            \"lang\": \"en\",\n            \"name\": \"Label 2\",\n            \"description\": \"Label 2 Description\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/labels",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"labels"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Label",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bg_color\": \"#000\",\n    \"color\": \"#fff\",\n    \"languages\": [\n        {\n            \"lang\": \"en\",\n            \"name\": \"Label 3 edited\",\n            \"description\": \"Label 3 Description edited\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/labels/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"labels",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Label",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"languages\": [\n        {\n            \"code\": \"en\",\n            \"name\": \"Label 1 edited\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/labels/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"labels",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "List Categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/categories",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"categories"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Categories Tree",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/categories/tree",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"categories",
+								"tree"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Category Change Parent",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"target_id\": 9\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/categories/:id/change-parent",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"categories",
+								":id",
+								"change-parent"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "0",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "15"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Categories Reorder",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"categories\": [\n        {\n            \"id\": 10,\n            \"order\": 1\n        },\n        {\n            \"id\": 14,\n            \"order\": 3\n        },\n        {\n            \"id\": 16,\n            \"order\": 2\n        },\n        {\n            \"id\": 17,\n            \"order\": 5\n        },\n        {\n            \"id\": 18,\n            \"order\": 4\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/categories/reorder",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"categories",
+								"reorder"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Categories Reorder Тest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"categories\": [\n        {\n            \"id\": 20,\n            \"order\": 2\n        },\n        {\n            \"id\": 21,\n            \"order\": 1\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/categories/reorder",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"categories",
+								"reorder"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Category",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/categories/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"categories",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category_id\": 9,\n    \"languages\": [\n        {\n            \"lang\": \"en\",\n            \"name\": \"Category 1\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/categories",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"languages\": [\n        {\n            \"lang\": \"en\",\n            \"name\": \"Label 1 edited\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/categories/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"categories",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"languages\": [\n        {\n            \"code\": \"en\",\n            \"name\": \"Label 1 edited\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/categories/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"categories",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Companies",
+			"item": [
+				{
+					"name": "List Companies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/companies?created_at=2021-10-19orderBy[created_at]=desc&page=2&per_page=6",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"companies"
+							],
+							"query": [
+								{
+									"key": "created_at",
+									"value": "2021-10-19orderBy[created_at]=desc"
+								},
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "per_page",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Company",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/companies/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"companies",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Company Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/companies/1",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"companies",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Companies' NIPs",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"first_name\",\n    \"last_name\": \"last_name\",\n    \"email\": \"test@gmail.com\",\n    \"phone\": \"+380990776483\",\n    \"company_name\": \"test company_name\",\n    \"nip\": \"0031031201\"\n}\n"
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/companies/nips/:nip",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"companies",
+								"nips",
+								":nip"
+							],
+							"variable": [
+								{
+									"key": "nip",
+									"value": "30"
+								}
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Company",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"first_name\",\n    \"last_name\": \"last_name\",\n    \"email\": \"test@gmail.com\",\n    \"phone\": \"+380990776483\",\n    \"company_name\": \"test company_name\",\n    \"nip\": \"0031031201\",\n    \"address\": {\n        \"code\": \"012-21\",\n        \"city\": \"Warshava\",\n        \"voivodeship\": \"mazowieckie\",\n        \"street\": \"Elekcyjna\",\n        \"building\": \"23\",\n        \"house\": \"56B\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/companies",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Company Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"first_name\",\n    \"last_name\": \"last_name\",\n    \"email\": \"test@gmail.com\",\n    \"phone\": \"+380990776483\",\n    \"company_name\": \"test company_name\",\n    \"nip\": \"0031031201\",\n    \"address\": {\n        \"code\": \"012-21\",\n        \"city\": \"Warshava\",\n        \"voivodeship\": \"mazowieckie\",\n        \"street\": \"Elekcyjna\",\n        \"building\": \"23\",\n        \"house\": \"56B\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/companies",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Company",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"first_name\",\n    \"last_name\": \"last_name\",\n    \"email\": \"test@gmail.com\",\n    \"phone\": \"+380990776483\",\n    \"company_name\": \"test company_name\",\n    \"nip\": \"0031031201\",\n    \"address\": {\n        \"code\": \"012-21\",\n        \"city\": \"Warshava\",\n        \"voivodeship\": \"mazowieckie\",\n        \"street\": \"Elekcyjna\",\n        \"building\": \"23\",\n        \"house\": \"56B\"\n    }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/companies/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"companies",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Company",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/companies/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"companies",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Block Company",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/companies/:id/block",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"companies",
+								":id",
+								"block"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Block Company",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company_ids\": [42,43],\n    \"reason\": \"bad boy\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/companies/bulk-block",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"companies",
+								"bulk-block"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Unblock Company",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company_ids\": [42,43]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/companies/bulk-unblock",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"companies",
+								"bulk-unblock"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Delete Company",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company_ids\": [42,43]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/companies/bulk",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"companies",
+								"bulk"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Unblock Company",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/companies/:id/unblock",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"companies",
+								":id",
+								"unblock"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Company Groups List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/companies/72/groups",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"companies",
+								"72",
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Company Groups List Search",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/companies/72/groups?&id=22",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"companies",
+								"72",
+								"groups"
+							],
+							"query": [
+								{
+									"key": null,
+									"value": null
+								},
+								{
+									"key": "id",
+									"value": "22"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Company Groups List Sort By",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/companies/72/groups?orderBy[id]=desc",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"companies",
+								"72",
+								"groups"
+							],
+							"query": [
+								{
+									"key": "orderBy[id]",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Group from Company",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Add Group to Company",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vats",
+			"item": [
+				{
+					"name": "List Vats",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjFcL2FwaVwvZW5cL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjMzMDYyMzE5LCJleHAiOjE2MzM2NjIzMTksIm5iZiI6MTYzMzA2MjMxOSwianRpIjoiTk8yazlFWGNnRlVhempPWSIsInN1YiI6MSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.xor_B-_r8HizqS0OkwjShPSaQo6Wm--8liL_Og19owM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/vats?per_page=5",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"vats"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "5"
+								}
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Vat",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjFcL2FwaVwvZW5cL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjMzMDYyMzE5LCJleHAiOjE2MzM2NjIzMTksIm5iZiI6MTYzMzA2MjMxOSwianRpIjoiTk8yazlFWGNnRlVhempPWSIsInN1YiI6MSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.xor_B-_r8HizqS0OkwjShPSaQo6Wm--8liL_Og19owM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/vats/1",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"vats",
+								"1"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Vat",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjFcL2FwaVwvZW5cL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjMzMDYyMzE5LCJleHAiOjE2MzM2NjIzMTksIm5iZiI6MTYzMzA2MjMxOSwianRpIjoiTk8yazlFWGNnRlVhempPWSIsInN1YiI6MSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.xor_B-_r8HizqS0OkwjShPSaQo6Wm--8liL_Og19owM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"wilsa\",\n    \"value\": 13\n}"
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/vats",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"vats"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Vat",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjFcL2FwaVwvZW5cL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjMzMDYyMzE5LCJleHAiOjE2MzM2NjIzMTksIm5iZiI6MTYzMzA2MjMxOSwianRpIjoiTk8yazlFWGNnRlVhempPWSIsInN1YiI6MSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.xor_B-_r8HizqS0OkwjShPSaQo6Wm--8liL_Og19owM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"wilsa1\",\n    \"value\": 12\n}"
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/vats/1",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"vats",
+								"1"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Vat",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjFcL2FwaVwvZW5cL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjMzMDYyMzE5LCJleHAiOjE2MzM2NjIzMTksIm5iZiI6MTYzMzA2MjMxOSwianRpIjoiTk8yazlFWGNnRlVhempPWSIsInN1YiI6MSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.xor_B-_r8HizqS0OkwjShPSaQo6Wm--8liL_Og19owM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"wilsa\",\n    \"value\": 13\n}"
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/vats/3",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"vats",
+								"3"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get Products List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/products?name=Prof",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"products"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "7",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "Prof"
+								},
+								{
+									"key": "page",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/products/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "70"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Price Type settings",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/products/:id/price-types/settings",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"products",
+								":id",
+								"price-types",
+								"settings"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "_N37FAw8F/1215839.jpg"
+								},
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "qxTkFegHV/1330042.jpg"
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "streamsoft_code",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "ean",
+									"value": "1234567890123",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "attributes[0][id]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "attributes[0][value]",
+									"value": "attr val 1",
+									"type": "text"
+								},
+								{
+									"key": "attributes[1][id]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "attributes[1][value]",
+									"value": "attr val 2",
+									"type": "text"
+								},
+								{
+									"key": "categories[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "categories[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "similar[]",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "similar[]",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "price_types[0][id]",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "price_types[0][value]",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "price_types[1][id]",
+									"value": "8",
+									"type": "text"
+								},
+								{
+									"key": "price_types[1][value]",
+									"value": "456",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][lang]",
+									"value": "en",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][name]",
+									"value": "Test Product Name",
+									"type": "text"
+								},
+								{
+									"key": "admin_name",
+									"value": "Test Product Admin Name",
+									"type": "text"
+								},
+								{
+									"key": "slug",
+									"value": "qwe-rty",
+									"type": "text"
+								},
+								{
+									"key": "blocks[0][lang]",
+									"value": "en",
+									"type": "text"
+								},
+								{
+									"key": "blocks[0][name]",
+									"value": "Description Block",
+									"type": "text"
+								},
+								{
+									"key": "blocks[0][content]",
+									"value": "Description Block Content",
+									"type": "text"
+								},
+								{
+									"key": "vat_id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/products",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "/home/igorv/Загрузки/nyan_cat.jpg"
+								},
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "/home/igorv/DEV/123.jpeg"
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "streamsoft_code",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "ean",
+									"value": "1234567890123",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "attributes[0][id]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "attributes[0][value]",
+									"value": "attr val 2",
+									"type": "text"
+								},
+								{
+									"key": "attributes[1][id]",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "attributes[1][value]",
+									"value": "attr val 3",
+									"type": "text"
+								},
+								{
+									"key": "categories[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "categories[]",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "similar[]",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "similar[]",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "price_types[0][id]",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "price_types[0][value]",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "price_types[1][id]",
+									"value": "8",
+									"type": "text"
+								},
+								{
+									"key": "price_types[1][value]",
+									"value": "456",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][lang]",
+									"value": "en",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][name]",
+									"value": "Test Product Name Edited",
+									"type": "text"
+								},
+								{
+									"key": "admin_name",
+									"value": "Test Product Admin Name Edited",
+									"type": "text"
+								},
+								{
+									"key": "slug",
+									"value": "qwe-rty-edited",
+									"type": "text"
+								},
+								{
+									"key": "blocks[0][lang]",
+									"value": "en",
+									"type": "text"
+								},
+								{
+									"key": "blocks[0][id]",
+									"value": "Description Edited",
+									"type": "text"
+								},
+								{
+									"key": "blocks[0][name]",
+									"value": "Description Edited",
+									"type": "text"
+								},
+								{
+									"key": "blocks[0][content]",
+									"value": "bla-bla-bla-blaaa",
+									"type": "text"
+								},
+								{
+									"key": "_method",
+									"value": "PUT",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/products/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "67"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product PriceType settings",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjFcL2FwaVwvZW5cL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjMzOTM5ODUyLCJleHAiOjE2Mzc1Mzk4NTIsIm5iZiI6MTYzMzkzOTg1MiwianRpIjoiSTRiMWhDbDgyQlMyeWtjRCIsInN1YiI6MSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.ej5raWAbBfr9TLR_90HlWXjyZJKizdsuOnEFj5PBs9M",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"product_id\": 1,\n        \"price_type_id\": 1,\n        \"netto\": 23.24,\n        \"discount_netto\": 0.0\n    }\n]"
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/products/price-types/settings",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"products",
+								"price-types",
+								"settings"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Change Product Files Order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjFcL2FwaVwvZW5cL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjMzOTM5ODUyLCJleHAiOjE2Mzc1Mzk4NTIsIm5iZiI6MTYzMzkzOTg1MiwianRpIjoiSTRiMWhDbDgyQlMyeWtjRCIsInN1YiI6MSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.ej5raWAbBfr9TLR_90HlWXjyZJKizdsuOnEFj5PBs9M",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"files\": [\n        {\n            \"id\": 1,\n            \"order\": 2\n        },\n        {\n            \"id\": 2,\n            \"order\": 1\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/products/:id/reorder",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"products",
+								":id",
+								"reorder"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product File",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "/home/igorv/Загрузки/nyan_cat.jpg"
+								},
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "/home/igorv/DEV/123.jpeg"
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "streamsoft_code",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "ean",
+									"value": "1234567890123",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "attributes[0][id]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "attributes[0][value]",
+									"value": "attr val 1",
+									"type": "text"
+								},
+								{
+									"key": "attributes[1][id]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "attributes[1][value]",
+									"value": "attr val 2",
+									"type": "text"
+								},
+								{
+									"key": "categories[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "categories[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "similar[]",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "similar[]",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "price_types[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "price_types[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][code]",
+									"value": "en",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][name]",
+									"value": "Test Product Name",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][description]",
+									"value": "Tets Product Description",
+									"type": "text"
+								},
+								{
+									"key": "admin_name",
+									"value": "Test Product Admin Name",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/products/:id/file/:file_id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"products",
+								":id",
+								"file",
+								":file_id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "65"
+								},
+								{
+									"key": "file_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "/home/igorv/Загрузки/nyan_cat.jpg"
+								},
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "/home/igorv/DEV/123.jpeg"
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "streamsoft_code",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "ean",
+									"value": "1234567890123",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "attributes[0][id]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "attributes[0][value]",
+									"value": "attr val 1",
+									"type": "text"
+								},
+								{
+									"key": "attributes[1][id]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "attributes[1][value]",
+									"value": "attr val 2",
+									"type": "text"
+								},
+								{
+									"key": "categories[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "categories[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "similar[]",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "similar[]",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "price_types[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "price_types[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][code]",
+									"value": "en",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][name]",
+									"value": "Test Product Name",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][description]",
+									"value": "Tets Product Description",
+									"type": "text"
+								},
+								{
+									"key": "admin_name",
+									"value": "Test Product Admin Name",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/products/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "65"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rooms",
+			"item": [
+				{
+					"name": "Get Rooms List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/rooms?name=rty",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"rooms"
+							],
+							"query": [
+								{
+									"key": "items_count",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "rty"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Room",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/rooms/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"rooms",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Room",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "/home/igorv/Загрузки/nyan_cat.jpg"
+								},
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "/home/igorv/DEV/123.jpeg"
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "similar[]",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "similar[]",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "languages[0][lang]",
+									"value": "en",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][name]",
+									"value": "Test Room Name",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][description]",
+									"value": "Test Room Description",
+									"type": "text"
+								},
+								{
+									"key": "admin_name",
+									"value": "Test Room Admin Name",
+									"type": "text"
+								},
+								{
+									"key": "slug",
+									"value": "qwe-rty",
+									"type": "text"
+								},
+								{
+									"key": "products[]",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "products[]",
+									"value": "12",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/rooms",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"rooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Room",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "/home/igorv/Загрузки/nyan_cat.jpg"
+								},
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "/home/igorv/DEV/123.jpeg"
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "similar[]",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "similar[]",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "languages[0][lang]",
+									"value": "en",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][name]",
+									"value": "Test Room Name",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][description]",
+									"value": "Test Room Description",
+									"type": "text"
+								},
+								{
+									"key": "admin_name",
+									"value": "Test Room Admin Name",
+									"type": "text"
+								},
+								{
+									"key": "slug",
+									"value": "qwe-rty",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/rooms/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"rooms",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set Room File Markers",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"file_id\": 123,\n    \"markers\": [\n        {\n            \"product_id\": 1,\n            \"x\": 2,\n            \"y\": 2\n        },\n        {\n            \"product_id\": 2,\n            \"x\": 4,\n            \"y\": 4\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/rooms/:id/markers",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"rooms",
+								":id",
+								"markers"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Change Room Files Order",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"files\": [\n        {\n            \"id\": 1,\n            \"order\": 2\n        },\n        {\n            \"id\": 2,\n            \"order\": 1\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/rooms/:id/reorder",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"rooms",
+								":id",
+								"reorder"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Room File",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "/home/igorv/Загрузки/nyan_cat.jpg"
+								},
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "/home/igorv/DEV/123.jpeg"
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "streamsoft_code",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "ean",
+									"value": "1234567890123",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "attributes[0][id]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "attributes[0][value]",
+									"value": "attr val 1",
+									"type": "text"
+								},
+								{
+									"key": "attributes[1][id]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "attributes[1][value]",
+									"value": "attr val 2",
+									"type": "text"
+								},
+								{
+									"key": "categories[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "categories[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "similar[]",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "similar[]",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "price_types[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "price_types[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][code]",
+									"value": "en",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][name]",
+									"value": "Test Product Name",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][description]",
+									"value": "Tets Product Description",
+									"type": "text"
+								},
+								{
+									"key": "admin_name",
+									"value": "Test Product Admin Name",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/rooms/:id/file/:file_id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"rooms",
+								":id",
+								"file",
+								":file_id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "65"
+								},
+								{
+									"key": "file_id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Room",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "/home/igorv/Загрузки/nyan_cat.jpg"
+								},
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "/home/igorv/DEV/123.jpeg"
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "streamsoft_code",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "ean",
+									"value": "1234567890123",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "attributes[0][id]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "attributes[0][value]",
+									"value": "attr val 1",
+									"type": "text"
+								},
+								{
+									"key": "attributes[1][id]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "attributes[1][value]",
+									"value": "attr val 2",
+									"type": "text"
+								},
+								{
+									"key": "categories[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "categories[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "similar[]",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "similar[]",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "price_types[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "price_types[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][code]",
+									"value": "en",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][name]",
+									"value": "Test Product Name",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][description]",
+									"value": "Tets Product Description",
+									"type": "text"
+								},
+								{
+									"key": "admin_name",
+									"value": "Test Product Admin Name",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/rooms/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"rooms",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "65"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Price Types",
+			"item": [
+				{
+					"name": "List Price Types",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/price-types",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"price-types"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Price Type",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/price-types/1",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"price-types",
+								"1"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Price Type settings",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/products/1/price-types/settings",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"products",
+								"1",
+								"price-types",
+								"settings"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Price Type",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Price Type 1\"\n}"
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/price-types",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"price-types"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Price Type",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \n}"
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/price-types/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"price-types",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Price Type",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/price-types/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"price-types",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Assign Price Type",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company_id\": 1,\n    \"price_type_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/price-types/assign",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"price-types",
+								"assign"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Delete",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "List Users",
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/users?per_page=1",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"users"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "List Manager Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/users/managers?per_page=1",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"users",
+								"managers"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "1"
+								}
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/users/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						},
+						"description": "get roles"
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"first_ncafsfsdmfdfsde\",\n    \"last_name\": \"last_fdsffdsafsdfsdnaxme\",\n    \"email\": \"te312133122s4t@gmail.com\",\n    \"phone\": \"+380211776483\",\n    \"nip\": \"7717730592\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/users",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"users"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Manager User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"firsft_ncamffeff\",\n    \"last_name\": \"last_fnaffxmeff\",\n    \"email\": \"tes413312t@gmail.com\",\n    \"phone\": \"+381121773413\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/users/managers",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"users",
+								"managers"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"first_ncamfdfsde\",\n    \"last_name\": \"last_fdsfsdfsdnaxme\",\n    \"email\": \"te312132s4t@gmail.com\",\n    \"phone\": \"+380111776483\",\n    \"blocked_reason\": \"bad re\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/users/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Unblock User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/users/:id/unblock",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"users",
+								":id",
+								"unblock"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Block User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"hello\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/users/:id/block",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"users",
+								":id",
+								"block"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Block User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"bad boy\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/users/bulk-block",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"users",
+								"bulk-block"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Unblock User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_ids\": [57,58]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/users/bulk-unblock",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"users",
+								"bulk-unblock"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Unblock User Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user_ids\": [57,58]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/users/bulk",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"users",
+								"bulk"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/users/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "User roles",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/users/roles",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"users",
+								"roles"
+							]
+						},
+						"description": "get roles"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Address",
+			"item": [
+				{
+					"name": "Add delivery address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company_id\": 22,\n    \"address\": {\n        \"code\": \"012-21\",\n        \"city\": \"Warshava\",\n        \"voivodeship\": \"mazowieckie\",\n        \"street\": \"Elekcyjna\",\n        \"first_name\": \"dasdas\",\n        \"last_name\": \"dasdas\",\n        \"phone\": \"+380990776483\",\n        \"building\": \"23\",\n        \"description\": \"2332\",\n        \"house\": \"56B\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/addresses/deliveries",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"addresses",
+								"deliveries"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update delivery address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company_id\": 22,\n    \"address_id\": 111,\n    \"address\": {\n        \"code\": \"012-21\",\n        \"city\": \"Warshava\",\n        \"voivodeship\": \"mazowieckie\",\n        \"street\": \"Elekcyjna\",\n        \"first_name\": \"dasdas\",\n        \"last_name\": \"dasdas\",\n        \"phone\": \"+380990776483\",\n        \"building\": \"23\",\n        \"description\": \"2332\",\n        \"house\": \"56B\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/addresses/deliveries",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"addresses",
+								"deliveries"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get addresses by code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/addresses/:code",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"addresses",
+								":code"
+							],
+							"variable": [
+								{
+									"key": "code",
+									"value": "01-123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/addresses/:code",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"addresses",
+								":code"
+							],
+							"variable": [
+								{
+									"key": "code",
+									"value": "01-123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete delivery address",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company_id\": 22,\n    \"address_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/addresses/deliveries",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"addresses",
+								"deliveries"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "System messages",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/system-messages",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"system-messages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/system-messages/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"system-messages",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Set",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "slug",
+									"value": "slug-0000000002",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][lang]",
+									"value": "en",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][name]",
+									"value": "Cute set",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][estimate_delivery]",
+									"value": "1 day",
+									"type": "text"
+								},
+								{
+									"key": "price_types[0][id]",
+									"value": "105",
+									"type": "text"
+								},
+								{
+									"key": "price_types[0][netto]",
+									"value": "120.23",
+									"type": "text"
+								},
+								{
+									"key": "price_types[0][discount_netto]",
+									"value": "100.44",
+									"type": "text"
+								},
+								{
+									"key": "products[0]",
+									"value": "76",
+									"type": "text"
+								},
+								{
+									"key": "files[]",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "files[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "vat_id",
+									"value": "92",
+									"type": "text"
+								},
+								{
+									"key": "categories[]",
+									"value": "161",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "attributes[0]",
+									"value": "130",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "attributes[value]",
+									"value": "DSFGVadgbvzdfv",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/sets",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"sets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "slug",
+									"value": "slug2",
+									"type": "text"
+								},
+								{
+									"key": "labels[]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][code]",
+									"value": "pl",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][name]",
+									"value": "Set name2",
+									"type": "text"
+								},
+								{
+									"key": "languages[0][description]",
+									"value": "Description name2",
+									"type": "text"
+								},
+								{
+									"key": "price_types[0][id]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "price_types[0][netto]",
+									"value": "120.23",
+									"type": "text"
+								},
+								{
+									"key": "price_types[0][discount_netto]",
+									"value": "100.44",
+									"type": "text"
+								},
+								{
+									"key": "products[0]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "/home/vjet-dev/Desktop/Снимок экрана в 2021-10-13 10-20-47.png"
+								},
+								{
+									"key": "files[]",
+									"type": "file",
+									"src": "/home/vjet-dev/Desktop/Снимок экрана в 2021-10-11 10-34-36.png"
+								},
+								{
+									"key": "vat_id",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/sets/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"sets",
+								":id"
+							],
+							"query": [
+								{
+									"key": "XDEBUG_SESSION_START",
+									"value": "17991",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/sets/:id",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"sets",
+								":id"
+							],
+							"query": [
+								{
+									"key": "XDEBUG_SESSION_START",
+									"value": "17991",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"set_ids\": [2,3]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/sets",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"sets"
+							],
+							"query": [
+								{
+									"key": "XDEBUG_SESSION_START",
+									"value": "17991",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Price Type settings",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/sets/10/price-types/settings",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"sets",
+								"10",
+								"price-types",
+								"settings"
+							]
+						},
+						"description": "register"
+					},
+					"response": []
+				},
+				{
+					"name": "get products autocomplete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/sets/products/:codeOrName",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"sets",
+								"products",
+								":codeOrName"
+							],
+							"variable": [
+								{
+									"key": "codeOrName",
+									"value": "re"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/sets?per_page=10&orderBy[id]=desc",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"sets"
+							],
+							"query": [
+								{
+									"key": "per_page",
+									"value": "10"
+								},
+								{
+									"key": "orderBy[id]",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show",
+					"request": {
+						"auth": {
+							"type": "bearer"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/sets/33",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"sets",
+								"33"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Groups",
+			"item": [
+				{
+					"name": "Create group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Group Name\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/groups",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List of groups",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/groups",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List of groups Sort By",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/groups?orderBy[name]=desc",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"groups"
+							],
+							"query": [
+								{
+									"key": "orderBy[name]",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List of groups Search",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/groups?page=1&per_page=10&name=Новая&orderBy[name]=desc",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"groups"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "10"
+								},
+								{
+									"key": "name",
+									"value": "Новая"
+								},
+								{
+									"key": "orderBy[name]",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Companies in Group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"company_ids\": [\r\n             75, 74, 73, 72, 71, 70, 69, 61, 60\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/groups/21/companies",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"groups",
+								"21",
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Companies from Group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"company_ids\": [\r\n        \r\n        71\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/groups/25/delete-companies",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"groups",
+								"25",
+								"delete-companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show Group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/groups/25",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"groups",
+								"25"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"group_ids\": [\r\n        23,\r\n        22\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/groups/bulk-delete",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"groups",
+								"bulk-delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Companies",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/groups/40/companies",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"groups",
+								"40",
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Block Group Companies",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reason\": \"Block reason\",\r\n    \"company_ids\": [\r\n        1, 39\r\n        \r\n    \r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/groups/companies/bulk-block",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"groups",
+								"companies",
+								"bulk-block"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Unblock Group Companies",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"company_ids\": [\r\n        1\r\n        \r\n        \r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/groups/companies/bulk-unblock",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"groups",
+								"companies",
+								"bulk-unblock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Set Price Type Group Companies",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price_type_id\": 99,\r\n    \"company_ids\": [\r\n        1, 81\r\n        \r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/groups/companies/bulk-set-price-type",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"groups",
+								"companies",
+								"bulk-set-price-type"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Companies from Group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"company_ids\": [\r\n        60,\r\n        61\r\n        \r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/groups/27/companies",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"groups",
+								"27",
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Groups Sort by",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/groups/27/companies?orderBy[created_at]=desc",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"groups",
+								"27",
+								"companies"
+							],
+							"query": [
+								{
+									"key": "orderBy[created_at]",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Groups Search",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{proto}}://{{host}}/api/{{lang}}/groups/27/companies?&id=41",
+							"protocol": "{{proto}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"{{lang}}",
+								"groups",
+								"27",
+								"companies"
+							],
+							"query": [
+								{
+									"key": null,
+									"value": null
+								},
+								{
+									"key": "id",
+									"value": "41"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
